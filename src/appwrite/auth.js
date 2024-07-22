@@ -39,6 +39,15 @@ class AuthService {
       return await this.account.get()
     } catch (error) {
       throw error
+    }//return null
+  }
+
+  async userLogout(){
+    // eslint-disable-next-line no-useless-catch
+    try {
+      return await this.account.deleteSessions()
+    } catch (error) {
+      throw error
     }
   }
 }
