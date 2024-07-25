@@ -87,6 +87,19 @@ class BlogDetails{
         }
    
     }
+
+    async getAllBlogs(query=[Query.equal("status","active")]){
+        try {
+            return await this.databases.listDocuments(
+                configEnvVar.databaseId,
+                configEnvVar.collectionId,
+                query
+            )
+        } catch (error) {
+            console.log("error occured, could not fetch all the blogs")
+            return false
+        }
+    }
 }
 
 const blogDetails=new BlogDetails()
