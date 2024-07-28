@@ -1,4 +1,4 @@
-import { Client,Databases,Storage } from "appwrite";
+import { Client,Databases,Query,Storage } from "appwrite";
 import configEnvVar from "../configure/config";
 
 class BlogDetails{
@@ -88,7 +88,7 @@ class BlogDetails{
    
     }
 
-    async getAllBlogs(query=[Query.equal("status","active")]){
+    async getAllBlogs(query=[Query.equal("status","active")]){//we have used array since we could apply multiple queries as well
         try {
             return await this.databases.listDocuments(
                 configEnvVar.databaseId,
