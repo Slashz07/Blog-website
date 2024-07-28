@@ -25,6 +25,30 @@ class mediaUpload{
         }
     }
 
+    async deleteFile(fileId){
+        try {
+            return await this.bucket.deleteFile(
+                configEnvVar.bucketId,
+                fileId
+            )
+        } catch (error) {
+            console.log("could not delete the file")
+            return false
+        }
+    }
+    getPreview(fileId){
+        // eslint-disable-next-line no-useless-catch
+        try {
+            return this.bucket.getPreview(
+                configEnvVar.bucketId,
+                fileId
+            )
+        } catch (error) {
+            throw error
+        }
+      
+    }
+
 }
 
 const uploadFiles=new mediaUpload()
