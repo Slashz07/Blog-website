@@ -36,7 +36,7 @@ class mediaUpload{
             return false
         }
     }
-    getPreview(fileId){
+    getFilePreview(fileId){
         // eslint-disable-next-line no-useless-catch
         try {
             return this.bucket.getPreview(
