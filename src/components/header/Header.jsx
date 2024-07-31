@@ -1,8 +1,65 @@
 import React from 'react'
+import {Container,Logo,LogoutBtn} from "../index.js"
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 
 function Header() {
+
+  const loginStatus=useSelector((state)=>state.auth.status)
+  const navigate=useNavigate()
+
+  const navItems=[
+    {
+      name:"Home",
+      slug:"/home",
+      active:!loginStatus
+    },
+    {
+      name:"Login",
+      slug:"/login",
+      active:!loginStatus
+    },
+    {
+      name:"Sign Up",
+      slug:"/signup",
+      active:!loginStatus
+    },
+    {
+      name:"All Posts",
+      slug:"/allPosts",
+      active:loginStatus
+    }
+  ]
+
   return (
-    <div>header</div>
+<header className='py-3 shadow bg-gray-500'>
+  <Container>
+    <nav className='flex'>
+      <div className='mr-4'>
+        <Link to='/'>
+        <Logo width='70px'/>
+        </Link>
+      </div>
+    <ul>
+      {navItems.map((item,index)=> 
+       item.active ? (
+        <li key={index}>
+          <button
+          className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
+          onClick={()=>navigate(item.slug)}
+          >{item.name}</button>
+        </li>
+       ):null )}
+
+       {loginStatus&&(
+        <li><LogoutBtn/></li>
+       )}
+    </ul>
+    </nav>
+  </Container>
+</header>
   )
 }
 
