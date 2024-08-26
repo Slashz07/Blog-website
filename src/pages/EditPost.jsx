@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from 'react'
+import { useState,useEffect } from 'react'
 import blogDetails from '../appwrite/blogDetailsStore'
 import { Container, PostForm } from '../components'
 import { useNavigate,useParams } from 'react-router-dom'
 
 function EditPost() {
-    const [post,setPost]=useState
+    const [post,setPost]=useState()
     const navigate=useNavigate()
     const {slug}=useParams()
 
