@@ -13,8 +13,8 @@ function Header() {
   const navItems=[
     {
       name:"Home",
-      slug:"/home",
-      active:!loginStatus
+      slug:"/",
+      active:"true"
     },
     {
       name:"Login",
@@ -27,10 +27,15 @@ function Header() {
       active:!loginStatus
     },
     {
-      name:"All Posts",
-      slug:"/allPosts",
+      name:"Add Posts",
+      slug:"/add-post",
       active:loginStatus
-    }
+    },
+    {
+      name:"All Posts",
+      slug:"/all-posts",
+      active:loginStatus
+    },
   ]
 
   return (
@@ -42,13 +47,13 @@ function Header() {
         <Logo width='70px'/>
         </Link>
       </div>
-    <ul>
+    <ul className='flex ml-auto'>
       {navItems.map((item,index)=> 
        item.active ? (
         <li key={index}>
           <button
           className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
-          onClick={()=>navigate(item.slug)}
+          onClick={()=>navigate(item.slug)}//we can use either from link and navigate,both perform same work
           >{item.name}</button>
         </li>
        ):null )}

@@ -22,8 +22,8 @@ function Login() {
         const userData= await authService.getCurrentUser()
         if(userData){
             dispatch(login(userData))
-            navigate('/')
         }
+        navigate('/')
     }
     } catch (error) {
         setError(error.message)
@@ -55,6 +55,7 @@ function Login() {
                 <div className='space-y-5'>
                     <Input label="Email: "
                     placeholder="Enter your email"
+                    name="email"
                     type="email"
                     {...register("email",{
                         required:true,
@@ -65,6 +66,7 @@ function Login() {
                     />
                     <Input label="Password: "
                     type="password"
+                    name="password"
                     placeholder="Enter your password"
                     {...register("password",{
                         required:true

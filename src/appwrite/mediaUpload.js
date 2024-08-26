@@ -1,14 +1,16 @@
-import { Client, ID } from "appwrite";
+import { Client,Databases,Storage, ID } from "appwrite";
 import configEnvVar from "../configure/config";
 
 class mediaUpload{
-    client=new Client
+    client=new Client()
+    databases
     bucket
 
     constructor(){
         this.client
         .setEndpoint(configEnvVar.appwriteUrl)
-        .setProject(configEnvVar.setProject)
+        .setProject(configEnvVar. appwriteProjectId)
+        this.databases=new Databases(this.client)
         this.bucket=new Storage(this.client)
     }
 
@@ -39,7 +41,7 @@ class mediaUpload{
     getFilePreview(fileId){
         // eslint-disable-next-line no-useless-catch
         try {
-            return this.bucket.getPreview(
+            return this.bucket.getFilePreview(
                 configEnvVar.bucketId,
                 fileId
             )

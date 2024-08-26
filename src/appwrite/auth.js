@@ -10,12 +10,12 @@ class AuthService {
     this.account=new Account(this.client)
   }
 
-  async createAccount({emailId,password,name}) {
+  async createAccount({email,password,name}) {
     // eslint-disable-next-line no-useless-catch
     try {
-      const userAccount = await this.account.create(ID.unique(), emailId, password, name)
+      const userAccount = await this.account.create(ID.unique(), email, password, name)
       if (userAccount) {
-        return await this.loginUser({emailId,password})
+        return await this.loginUser({email,password})
       } else {
         return userAccount
       }
@@ -24,10 +24,10 @@ class AuthService {
     }
   }
 
-  async loginUser({emailId,password}) {
+  async loginUser({email,password}) {
     // eslint-disable-next-line no-useless-catch
     try {
-      await this.account.createEmailPasswordSession(emailId,password)
+      return await this.account.createEmailPasswordSession(email,password)
     } catch (error) {
       throw error
     }

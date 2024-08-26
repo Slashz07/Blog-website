@@ -1,5 +1,5 @@
-import React,{ useState } from 'react'
-import authService from '../appwrite/auth'
+import { useState } from 'react'
+import authService from '../appwrite/auth.js'
 import {Input,Button,Logo} from './index.js'
 import { login } from '../features/authSlice.js'
 import { Link,useNavigate } from 'react-router-dom'
@@ -11,12 +11,12 @@ function SignUp() {
 
     let dispatch=useDispatch();
     const navigate=useNavigate();
-    const [register,handleSubmit]=useForm();
+    const {register,handleSubmit}=useForm();
     const [error,setError]=useState("")
 
 
     const userSignUp=async (data)=>{
-        setError()
+        setError("")
     try {
         const session=await authService.createAccount(data)
         if(session){
@@ -50,26 +50,30 @@ function SignUp() {
         {error&& <p className='text-red-600 mt-8 text-center'>
             {error}
             </p>}
-        <form onSubmit={handleSubmit(userSignUp)} className='mt-8'>
+        <form onSubmit={handleSubmit(userSignUp)} >
             <div className='space-y-5'>
             <Input label="Name: "
             placeholder="enter your name"
+            name="name"
             {...register("text",{
                 required:true
             })}
             />
             <Input label="Email: "
             placeholder="enter your email"
+            name="email"
             type="email"
             {...register("email",{
                 required:true,
                 validate:{
-                    matchPattern:(value)=>/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)||"Email address must be a valid address"
+                    matchPattern:(value)=> /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+                                "Email address must be a valid address"
                 }
             })}
             />
             <Input label="Password: "
             placeholder="enter your password"
+            name="password"
             type="password"
             {...register("password",{
                 required:true

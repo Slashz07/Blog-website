@@ -16,7 +16,7 @@ class BlogDetails{
     async createBlog({title,slug,content,featuredImage,status,userId}){
         // eslint-disable-next-line no-useless-catch
         try {
-            await this.databases.createDocument(
+           return await this.databases.createDocument(
                 configEnvVar.databaseId,
                 configEnvVar.collectionId,
                 slug,
