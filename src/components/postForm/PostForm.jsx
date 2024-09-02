@@ -5,12 +5,13 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import appwriteService from "../../appwrite/blogDetailsStore.js"
 import uploadFiles from "../../appwrite/mediaUpload.js"
+import { v4 as uuidv4 } from 'uuid';
+
 
 function PostForm({post}) {
 
     const navigate=useNavigate()
     const userData=useSelector((state)=>state.auth.userData)
-    console.log(userData)
     const {register,handleSubmit,getValues,setValue,watch,control}=useForm({
         defaultValues:{
             title:post?.title||"",
@@ -39,14 +40,16 @@ function PostForm({post}) {
                 navigate(`/post/${dbPost.$id}`)
             }
         }else{
+            console.log(data.content,typeof(data.content))
+
             const file=data.image[0]? await uploadFiles.uploadFile(data.image[0]):null
             
             const dbPost=await appwriteService.createBlog({
                 ...data,
                 featuredImage:file?file.$id:undefined,
-                userId:userData.$id
+                userId:userData.$id,
+                blogId:uuidv4()
             })
-
             if(dbPost){
                 navigate(`/post/${dbPost.$id}`)
             }

@@ -1,8 +1,11 @@
-import React from 'react'
-
-function Logo({width="100px"}) {
+function Logo({size="100px"}) {
   return (
-    <div>Logo</div>
+    <div 
+      className="flex  items-center "
+      style={{ width: size, height: size }}
+    >
+      <i className="fa-solid fa-feather text-5xl "></i>
+    </div>
   )
 }
 

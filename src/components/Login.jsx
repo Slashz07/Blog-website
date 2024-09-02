@@ -14,17 +14,21 @@ function Login() {
   const dispatch=useDispatch()
   const {register,handleSubmit}=useForm()
   
-  const userLogin=async (data)=>{
+  const userLogin= (data)=>{
     setError("")
     try {
-    const session=await authService.loginUser(data)
-    if(session){
-        const userData= await authService.getCurrentUser()
-        if(userData){
-            dispatch(login(userData))
+     authService.loginUser(data).then((session)=>{
+        if(session){
+              authService.getCurrentUser().then((userData)=>{
+                if(userData){
+                    dispatch(login({userData}))
+                }
+                navigate('/')
+            })
+         
         }
-        navigate('/')
-    }
+    })
+   
     } catch (error) {
         setError(error.message)
     }

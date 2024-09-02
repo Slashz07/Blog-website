@@ -13,13 +13,13 @@ class BlogDetails{
         this.bucket=new Storage(this.client)
     }
 
-    async createBlog({title,slug,content,featuredImage,status,userId}){
+    async createBlog({title,blogId,content,featuredImage,status,userId}){
         // eslint-disable-next-line no-useless-catch
         try {
            return await this.databases.createDocument(
                 configEnvVar.databaseId,
                 configEnvVar.collectionId,
-                slug,
+                blogId,
                 {
                 title,
                 content,
@@ -33,7 +33,7 @@ class BlogDetails{
         }
     }
 
-    async updateBlog(slug,   {
+    async updateBlog(blogId,   {
         title,
         content,
         featuredImage,
@@ -44,7 +44,7 @@ class BlogDetails{
                 return await this.databases.updateDocument(
                     configEnvVar.databaseId,
                     configEnvVar.collectionId,
-                    slug,
+                    blogId,
                     {
                         title,
                         content,
@@ -58,13 +58,13 @@ class BlogDetails{
  
     }
 
-    async deleteBlog(slug){
+    async deleteBlog(blogId){
         // eslint-disable-next-line no-useless-catch
         try {
              await this.databases.deleteDocument(
                 configEnvVar.databaseId,
                 configEnvVar.collectionId,
-                slug
+                blogId
             )
             return true
         } catch (error) {
@@ -73,13 +73,13 @@ class BlogDetails{
   
     }
 
-    async getBlog(slug){
+    async getBlog(blogId){
         // eslint-disable-next-line no-useless-catch
         try {
             return await this.databases.getDocument(
                 configEnvVar.databaseId,
                 configEnvVar.collectionId,
-                slug
+                blogId
             )
         } catch (error) {
             console.log("could not get any blog with provided id")

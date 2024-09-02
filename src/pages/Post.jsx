@@ -46,16 +46,14 @@ function Post() {
                             <Button
                             bgColor='bg-green-500'
                             className='mr-3'
-                            >
-                                Edit
-                            </Button>
+                            text={"Edit"}
+                            />
                         </Link>
                         <Button
                         bgColor='bg-red-500'
                         onClick={deletePost}
-                            >
-                            Delete
-                        </Button>
+                        text={"Delete"}
+                            />
                     </div>
                 )}
             </div>
