@@ -25,17 +25,23 @@ useEffect(()=>{
   .finally(()=>setLoading(false))
 })
 
-  return !loading ? (//this is conditional rendering
-    <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
-      <div className='w-full block'>
-      <Header/>
-        <main>
-          Todo : <Outlet/>
-        </main>
-        <Footer/>
-      </div>
-    </div>
-  ):null
+return !loading ? (
+  <div className='min-h-screen flex flex-col bg-gray-400'>
+    <Header className="flex-none"/> 
+    <main className='flex-1 p-2'>
+      <Outlet/>
+    </main>
+    <Footer className="flex-none"/> 
+  </div>
+) : (
+  <div className='min-h-screen flex flex-col bg-gray-400'>
+  <Header className="flex-none"/> 
+  <main className='flex justify-center items-center p-2' style={{height:"40vh"}}>
+   <b> <h1 className='text-3xl'>Loading...</h1></b>
+  </main>
+  <Footer className="flex-none"/> 
+</div>
+)
 }
 
 export default App
