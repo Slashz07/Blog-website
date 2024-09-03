@@ -1,0 +1,61 @@
+/* Base Styles */
+.post-container {
+    display: flex  !important;
+    flex-wrap: wrap  !important;
+    /* justify-content: center; */
+    padding: 16px  !important; /* Adjust padding as needed */
+}
+
+.post-card {
+    padding: 8px  !important;
+    width: 25%  !important; /* Default width for larger screens */
+    box-sizing: border-box  !important;
+}
+
+.post-content {
+    width: 100% !important;
+    background-color: #f3f4f6  !important; /* Equivalent to Tailwind's bg-gray-100 */
+    border-radius: 12px  !important; /* Equivalent to Tailwind's rounded-xl */
+    padding: 16px  !important;
+}
+
+.image-container {
+    display: flex  !important;
+    justify-content: center  !important;
+    margin-bottom: 16px  !important;
+}
+
+.image {
+    border-radius: 12px  !important;
+    width: 100%  !important;
+}
+
+.title {
+    font-size: 1.25rem  !important; /* Equivalent to Tailwind's text-xl */
+    font-weight: bold  !important;
+}
+
+/* Media Query for 1000px Width */
+@media (max-width: 1000px) {
+    .post-card {
+        width: 33.33% !important;  /* Ensure 3 cards in a row */
+    }
+}
+@media (max-width: 750px) {
+    .post-card {
+        width: 50% !important;  /* Ensure 3 cards in a row */
+    }
+}
+@media (max-width: 550px) {
+    .post-card {
+        width: 100% !important;  /* Ensure 3 cards in a row */
+    }
+}
+@media (max-width: 300px) {
+    .containerParent{
+        margin: auto;
+    }
+    .post-container {
+        width: 250px !important;  /* Ensure 3 cards in a row */
+    }
+}

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState,useEffect } from 'react'
 import parse from "html-react-parser"
 import { useSelector } from 'react-redux'

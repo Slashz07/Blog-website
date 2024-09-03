@@ -26,9 +26,9 @@ useEffect(()=>{
 })
 
 return !loading ? (
-  <div className='min-h-screen flex flex-col bg-gray-400'>
+  <div className='min-h-screen  w-screen flex flex-col bg-gray-400'>
     <Header className="flex-none"/> 
-    <main className='flex-1 p-2'>
+    <main className='flex-1 p-2' style={{width:"100%"}}>
       <Outlet/>
     </main>
     <Footer className="flex-none"/> 

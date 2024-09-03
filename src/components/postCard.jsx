@@ -1,6 +1,6 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import uploadFiles from "../appwrite/mediaUpload.js"
+import   './styles/PostCard.css'
 
 function postCard({
     $id,
@@ -9,13 +9,13 @@ function postCard({
 }) {
   return (
     <Link to={`/post/${$id}`} >
-        <div className='w-full bg-gray-100 rounded-xl p-4'>
-            <div className='w-full justify-center mb-4'>
+        <div className='post-content w-full bg-gray-100 rounded-xl p-4 '>
+            <div className='image-container w-full justify-center mb-4 '>
                 <img src={uploadFiles.getFilePreview(featuredImage)} alt={title} 
-                className='rounded-xl'
+                className='rounded-xl image'
                 />
             </div>
-            <h2 className='text-xl font-bold'>
+            <h2 className='text-xl font-bold title'>
                 {title}
             </h2> 
         </div>

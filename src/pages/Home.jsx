@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react'
 import { PostCard,Container } from '../components'
 import blogDetails from '../appwrite/blogDetailsStore'
+import   '../components/styles/PostCard.css'
 
 function Home() {
     const [posts,setPosts]=useState("")
@@ -41,12 +42,11 @@ function Home() {
         )
     }else{
         return (
-            <div className='w-full py-8'>
+            <div className='w-full py-8 '>
                 <Container>
-                    <div className='flex flex-wrap'>
+                    <div className='flex flex-wrap post-container'>
                         {posts.map((post) => (
-                            <div key={post.$id} className='p-2 w-1/4'>
-                                { console.log(post)}
+                            <div key={post.$id} className='post-card p-2 w-1/4 '>
                                 <PostCard {...post} />
                             </div>
                         ))}
