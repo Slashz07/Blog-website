@@ -1,14 +1,16 @@
+import { useState } from "react"
 import {Container,Logo,LogoutBtn} from "../index.js"
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-
+import "../styles/navbar.css"
 
 function Header() {
 
   const loginStatus=useSelector((state)=>state.auth.status)
   const navigate=useNavigate()
-
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDropdown = () => setIsOpen(!isOpen);
   const navItems=[
     {
       name:"Home",
@@ -40,28 +42,59 @@ function Header() {
   return (
 <header className='py-3 shadow bg-gray-500'>
   <Container>
-    <nav className='flex'>
-      <div className='mr-4'>
-        <Link to='/'>
-        <Logo size='50px'/>
-        </Link>
-      </div>
-    <ul className='flex ml-auto'>
-      {navItems.map((item,index)=> 
-       item.active ? (
-        <li key={index}>
-          <button
-          className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
-          onClick={()=>navigate(item.slug)}//we can use either from link and navigate,both perform same work
-          >{item.name}</button>
-        </li>
-       ):null )}
+  <nav className="flex items-center justify-between">
+  <div className="flex items-center">
+    <div className="md:hidden mr-4">
+      <button onClick={toggleDropdown}>
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <ul
+      className={`md:flex items-center transition-all duration-500 ease-in-out overflow-hidden ${
+        isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+      } md:max-h-none md:opacity-100`}
+    >
+      {navItems.map(
+        (item, index) =>
+          item.active && (
+            <li key={index} className="md:ml-4">
+              <button
+                className="inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full"
+                onClick={() => navigate(item.slug)}
+              >
+                {item.name}
+              </button>
+            </li>
+          )
+      )}
 
-       {loginStatus&&(
-        <li><LogoutBtn/></li>
-       )}
+      {loginStatus && (
+        <li className="md:ml-4">
+          <LogoutBtn />
+        </li>
+      )}
     </ul>
-    </nav>
+  </div>
+  <div className="ml-auto">
+    <Link to="/">
+      <Logo size="50px" />
+    </Link>
+  </div>
+</nav>
+
   </Container>
 </header>
   )

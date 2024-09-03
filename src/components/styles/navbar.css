@@ -1,0 +1,21 @@
+.navIcons{
+    display: flex !important;
+    justify-content: space-around !important;
+}
+
+.menuBtn{
+
+}
+.nav-dropdown {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
+    max-height: 0; /* Initially set max-height to 0 to hide the content */
+    overflow: hidden;
+  }
+
+  .nav-dropdown li {
+    text-align: left;
+    margin-left: 0;
+  }
+  
