@@ -12,6 +12,7 @@ export default function RTE({name,label,control,defaultValue=""}) {
         <Controller
         name={name || "content"}
         control={control}
+        rules={{ required: "Content is required" }}
         render={({field:{onChange}})=>(
             <Editor
             apiKey={configEnvVar.tinyMceApi}

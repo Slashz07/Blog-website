@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import appwriteService from "../../appwrite/blogDetailsStore.js"
 import uploadFiles from "../../appwrite/mediaUpload.js"
-import { v4 as uuidv4 } from 'uuid';
+
 
 
 function PostForm({post}) {
@@ -21,6 +21,13 @@ function PostForm({post}) {
         }
     })
 
+    const generateDateTimeId = (slug) => {
+        const now = new Date();
+        const time = now.toTimeString().split(' ')[0].replace(/:/g, ''); // Getting time in HHMMSS format
+        return `${time}-${slug}`;
+    };
+    
+ 
     const submit=async (data)=>{
         if(post){
             const file=data.image[0] ? await uploadFiles.uploadFile(data.image[0]):null
@@ -40,7 +47,7 @@ function PostForm({post}) {
                 navigate(`/post/${dbPost.$id}`)
             }
         }else{
-            console.log(data.content,typeof(data.content))
+            console.log(data)
 
             const file=data.image[0]? await uploadFiles.uploadFile(data.image[0]):null
             
@@ -48,7 +55,7 @@ function PostForm({post}) {
                 ...data,
                 featuredImage:file?file.$id:undefined,
                 userId:userData.$id,
-                blogId:uuidv4()
+                blogId:generateDateTimeId(data.slug)
             })
             if(dbPost){
                 navigate(`/post/${dbPost.$id}`)
@@ -94,6 +101,7 @@ function PostForm({post}) {
              label="Slug: "
              name="slug"
              placeholder="slug"
+             defaultValue={getValues("slug")}
              className="mb-4"
              {...register("slug",{
                  required:true
@@ -107,6 +115,7 @@ function PostForm({post}) {
              name="content"
              control={control}
              defaultValue={getValues("content")}
+             
              />
         </div>
       <div className='w-1/3 px-2'>

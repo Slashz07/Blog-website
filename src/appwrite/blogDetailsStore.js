@@ -13,7 +13,7 @@ class BlogDetails{
         this.bucket=new Storage(this.client)
     }
 
-    async createBlog({title,blogId,content,featuredImage,status,userId}){
+    async createBlog({title,blogId,slug,content,featuredImage,status,userId}){
         // eslint-disable-next-line no-useless-catch
         try {
            return await this.databases.createDocument(
@@ -22,6 +22,7 @@ class BlogDetails{
                 blogId,
                 {
                 title,
+                slug,
                 content,
                 featuredImage,
                 status,
@@ -36,22 +37,41 @@ class BlogDetails{
     async updateBlog(blogId,   {
         title,
         content,
+        slug,
         featuredImage,
         status        
         }){
             // eslint-disable-next-line no-useless-catch
             try {
-                return await this.databases.updateDocument(
-                    configEnvVar.databaseId,
-                    configEnvVar.collectionId,
-                    blogId,
-                    {
-                        title,
-                        content,
-                        featuredImage,
-                        status
-                    }
-                )
+                
+
+                if (featuredImage == undefined) {
+                    return await this.databases.updateDocument(
+                        configEnvVar.databaseId,
+                        configEnvVar.collectionId,
+                        blogId,
+                        {
+                            title,
+                            content,
+                            slug,
+                            status
+                        }
+                    )
+                }else{
+                    return await this.databases.updateDocument(
+                        configEnvVar.databaseId,
+                        configEnvVar.collectionId,
+                        blogId,
+                        {
+                            title,
+                            content,
+                            slug,
+                            status,
+                            featuredImage
+                        }
+                    )
+                }
+              
             } catch (error) {
                 throw error
             }
