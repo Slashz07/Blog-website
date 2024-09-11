@@ -2,7 +2,7 @@ import {Editor} from "@tinymce/tinymce-react"
 import { Controller } from 'react-hook-form'
 import configEnvVar from "../configure/config"
 
-export default function RTE({name,label,control,defaultValue=""}) {
+export default function RTE({name,label,control,defaultValue="",errors}) {
   return (
     <div className='w-full'>
         {label ?? <label className='inline-block mb-1 pl-1'>
@@ -49,8 +49,10 @@ export default function RTE({name,label,control,defaultValue=""}) {
             onEditorChange={onChange}
             />
         )}
-        
         />
+         {errors && errors[name] && (
+        <p className="text-red-600 mt-1">{errors[name].message}</p> 
+      )}
     </div>
   
   )

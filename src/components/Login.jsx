@@ -6,6 +6,8 @@ import authService from '../appwrite/auth.js'
 import { login } from '../features/authSlice.js'
 import { Link,useNavigate } from 'react-router-dom'
 import {useForm} from 'react-hook-form'
+import {  toast } from 'react-toastify';
+
 
 function Login() {
 
@@ -14,11 +16,18 @@ function Login() {
   const dispatch=useDispatch()
   const {register,handleSubmit}=useForm()
   
+  const showSuccess= ()=>{
+    toast.success("Successfully logged in",{
+      position:"top-center"
+    })
+  }
+
   const userLogin= (data)=>{
     setError("")
-    try {
+
      authService.loginUser(data).then((session)=>{
         if(session){
+            showSuccess()
               authService.getCurrentUser().then((userData)=>{
                 if(userData){
                     dispatch(login({userData}))
@@ -27,16 +36,15 @@ function Login() {
             })
          
         }
-    })
-   
-    } catch (error) {
+    }).catch((error)=>{
         setError(error.message)
-    }
+    })
 
 
   }
   return (
-    <div className='flex items-center justify-center w-full'>
+    <>
+     <div className='flex items-center justify-center w-full'>
       <div className={`w-full max-w-lg mx-auto bg-gray-100 rounded-xl p-10 border border-black/10`}>
         <div className='mb-2 flex justify-center'>
             <span className='inline-block w-full max-w-[100px]'>
@@ -83,6 +91,8 @@ function Login() {
             </form>
       </div>
     </div>
+    </>
+   
   )
 }
 

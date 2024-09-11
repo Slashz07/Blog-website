@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import appwriteService from "../../appwrite/blogDetailsStore.js"
 import uploadFiles from "../../appwrite/mediaUpload.js"
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -12,7 +14,7 @@ function PostForm({post}) {
 
     const navigate=useNavigate()
     const userData=useSelector((state)=>state.auth.userData)
-    const {register,handleSubmit,getValues,setValue,watch,control}=useForm({
+    const {register,handleSubmit,getValues,formState: { errors },setValue,watch,control}=useForm({
         defaultValues:{
             title:post?.title||"",
             slug:post?.slug||"",
@@ -20,6 +22,13 @@ function PostForm({post}) {
             status:post?.status||""
         }
     })
+
+    const showError= (error)=>{
+        toast.error(error.message,{
+          position:"top-center"
+        })
+      }
+   
 
     const generateDateTimeId = (slug) => {
         const now = new Date();
@@ -30,36 +39,61 @@ function PostForm({post}) {
  
     const submit=async (data)=>{
         if(post){
-            const file=data.image[0] ? await uploadFiles.uploadFile(data.image[0]):null
-            if(file){
-                uploadFiles.deleteFile(post.featuredImage)
-            }
-
-            const dbPost= await appwriteService.updateBlog(
-                post.$id,
-                {
-                    ...data,
-                    featuredImage:file?file.$id:undefined
+            try {
+                if(data.image[0].size>1024*1024){
+                    const error = new Error("Image size must not exceed 1mb");
+                    error.status = 401;  
+                    throw error;
                 }
-            )
-
-            if(dbPost){
-                navigate(`/post/${dbPost.$id}`)
+                const file=data.image[0] ? await uploadFiles.uploadFile(data.image[0]):null
+                if(file){
+                    uploadFiles.deleteFile(post.featuredImage)
+                }
+    
+                const dbPost= await appwriteService.updateBlog(
+                    post.$id,
+                    {
+                        ...data,
+                        featuredImage:file?file.$id:undefined
+                    }
+                )
+    
+                if(dbPost){
+                    navigate(`/post/${dbPost.$id}`)
+                }
+            } catch (error) {
+                showError(error)
             }
+         
         }else{
-            console.log(data)
+            try {
+                if(data.slug.length>29){
+                    const error = new Error("Title slug length must not exceed 29 characters,Please provide a short and crisp title");
+                    error.status = 401;  
+                    throw error;
+                }
 
-            const file=data.image[0]? await uploadFiles.uploadFile(data.image[0]):null
-            
-            const dbPost=await appwriteService.createBlog({
-                ...data,
-                featuredImage:file?file.$id:undefined,
-                userId:userData.$id,
-                blogId:generateDateTimeId(data.slug)
-            })
-            if(dbPost){
-                navigate(`/post/${dbPost.$id}`)
+                if(data.image[0].size>1024*1024){
+                    const error = new Error("Image size must not exceed 1mb");
+                    error.status = 401;  
+                    throw error;
+                }
+
+                const file=data.image[0]? await uploadFiles.uploadFile(data.image[0]):null
+
+                const dbPost=await appwriteService.createBlog({
+                    ...data,
+                    featuredImage:file?file.$id:undefined,
+                    userId:userData.$id,
+                    blogId:generateDateTimeId(data.slug)
+                })
+                if(dbPost){
+                    navigate(`/post/${dbPost.$id}`)
+                }
+            } catch (error) {
+                    showError(error)
             }
+         
         }
     }
 
@@ -86,48 +120,61 @@ function PostForm({post}) {
     },[watch,slugTransform,setValue])
 
   return (
-    <form onSubmit={handleSubmit(submit)} className='flex flex-wrap'>
+    <>
+      <form onSubmit={handleSubmit(submit)} className='flex flex-wrap'>
         <div className='w-2/3 px-2'>
+             <div>
+               <Input
+                   label="Title: "
+                   name="title"
+                   placeholder="title"
+                   className="mb-4"
+                   {...register("title",{
+                       required:"Title is required"
+                   })}
+                />
+                  {errors.title && <p className="text-red-600  mb-1">{errors.title.message}</p>}
+            </div>
+            <div>
             <Input
-            label="Title: "
-            name="title"
-            placeholder="title"
-            className="mb-4"
-            {...register("title",{
-                required:true
-            })}
-            />
-             <Input
              label="Slug: "
              name="slug"
              placeholder="slug"
              defaultValue={getValues("slug")}
              className="mb-4"
              {...register("slug",{
-                 required:true
+                 required:"slug is required"
              })}
              onInput={(e)=>{
                 setValue("slug",slugTransform(e.currentTarget.value),{shouldValidate:true})
              }}
              />
+                  {errors.slug && <p className="text-red-600  mb-1">{errors.slug.message}</p>}
+            </div>
+            
              <RTE
              label="Content: "
              name="content"
              control={control}
              defaultValue={getValues("content")}
-             
+             errors={errors}
              />
         </div>
       <div className='w-1/3 px-2'>
-        <Input
+      <div>
+      <Input
              label="Featured Image: "
              type="file"
              accept="image/jpg,image/png,image/jpeg,image/gif"
              className="mb-4"
              {...register("image",{
-                 required:!post
+                 required:post?false:"Image is required"
              })}
              />
+            {errors.image && <p className="text-red-600  mb-1">{errors.image.message}</p>}
+
+      </div>
+        
         {post && (
             <div
             className='w-full mb-4'
@@ -138,13 +185,17 @@ function PostForm({post}) {
             </div>
         )}
 
+        <div>
         <Select
-        label="Status: "
-        name="status"
-        options={["active","inactive"]}
-        className="mb-4"
-        {...register("status",{required:true})}
-        />
+                label="Status: "
+                name="status"
+                options={["active","inactive"]}
+                className="mb-4"
+                {...register("status",{required:"status is required"})}
+                />
+                {errors.status && <p className="text-red-600  mb-1">{errors.status.message}</p>}
+        </div>
+      
 
         <Button
         type="submit"
@@ -155,6 +206,7 @@ function PostForm({post}) {
       
       </div>
     </form>
+    </>
   )
 }
 

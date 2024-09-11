@@ -2,15 +2,23 @@ import { useDispatch } from 'react-redux'
 import { logout } from '../../features/authSlice.js'
 import authService from '../../appwrite/auth.js'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 function LogoutBtn() {
+
+  const showSuccess= ()=>{
+    toast.success("Successfully Logged out",{
+      position:"top-center"
+    })
+  }
 
   const dispatch=useDispatch()
   const navigate=useNavigate()
 
   function logoutHandler(){
     authService.userLogout().then(()=>dispatch(logout()))
+    showSuccess()
     navigate("/")
     
   }

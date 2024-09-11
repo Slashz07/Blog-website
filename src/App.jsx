@@ -5,6 +5,8 @@ import authService from "./appwrite/auth.js"
 import { login, logout } from './features/authSlice.js'
 import {Header,Footer} from "./components/index.js"
 import { Outlet } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -28,6 +30,7 @@ useEffect(()=>{
 return !loading ? (
   <div className='min-h-screen  w-screen flex flex-col bg-gray-400'>
     <Header className="flex-none"/> 
+    <ToastContainer/>
     <main className='flex-1 p-2' style={{width:"100%"}}>
       <Outlet/>
     </main>

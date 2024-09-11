@@ -5,6 +5,7 @@ import { login } from '../features/authSlice.js'
 import { Link,useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 
 function SignUp() {
@@ -14,15 +15,22 @@ function SignUp() {
     const {register,handleSubmit}=useForm();
     const [error,setError]=useState("")
 
+    const showSuccess= ()=>{
+        toast.success("Successfully Signed-Up and Logged in",{
+          position:"top-center"
+        })
+      }
+    
 
     const userSignUp=async (data)=>{
         setError("")
     try {
         const session=await authService.createAccount(data)
         if(session){
+            showSuccess()
             const userData=await authService.getCurrentUser()
             if(userData){
-                dispatch(login(userData))
+                dispatch(login({userData}))
                 navigate("/")
             }
         }
