@@ -29,7 +29,7 @@ function PostCard({ $id, featuredImage, title, status,userId }) {
   }
 
   return (
-    // <Link to={`/post/${$id}`} >
+
     <div onClick={checkStatus}>
       <div className="post-content w-full bg-gray-100 rounded-xl p-4 ">
         <div className="image-container w-full justify-center mb-4 ">
