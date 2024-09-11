@@ -14,6 +14,7 @@ class AuthService {
     // eslint-disable-next-line no-useless-catch
     try {
       const userAccount = await this.account.create(ID.unique(), email, password, name)
+      console.log(userAccount)
       if (userAccount) {
         return await this.loginUser({email,password})
       } else {

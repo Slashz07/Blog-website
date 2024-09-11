@@ -40,7 +40,7 @@ function PostForm({post}) {
     const submit=async (data)=>{
         if(post){
             try {
-                if(data.image[0].size>1024*1024){
+                if(data.image[0]&&data.image[0].size>1024*1024){
                     const error = new Error("Image size must not exceed 1mb");
                     error.status = 401;  
                     throw error;

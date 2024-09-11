@@ -4,7 +4,7 @@ import "./styles/PostCard.css";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-function postCard({ $id, featuredImage, title, status,userId }) {
+function PostCard({ $id, featuredImage, title, status,userId }) {
 
   const navigate=useNavigate()
   const currentUser=useSelector((state)=>state.auth.userData)
@@ -48,4 +48,4 @@ function postCard({ $id, featuredImage, title, status,userId }) {
   );
 }
 
-export default postCard;
+export default PostCard;
