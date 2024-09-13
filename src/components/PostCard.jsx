@@ -16,11 +16,9 @@ function PostCard({ $id, featuredImage, title, status,userId }) {
   }
 
   const checkStatus=()=>{
-    console.log(currentUser.$id)
-    console.log($id)
     if(status=="active"){
       navigate(`/post/${$id}`)
-    }else if(status=="inactive"&&currentUser.$id==userId){
+    }else if(status=="inactive"&&currentUser?.$id==userId){
       navigate(`/post/${$id}`)
     }else{
       denyEntry()
