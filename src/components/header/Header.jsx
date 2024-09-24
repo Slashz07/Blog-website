@@ -37,6 +37,11 @@ function Header() {
       slug:"/all-posts",
       active:loginStatus
     },
+    {
+      name:"My Posts",
+      slug:"/my-posts",
+      active:loginStatus
+    },
   ]
 
   return (
