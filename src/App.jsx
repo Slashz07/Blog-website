@@ -18,7 +18,7 @@ useEffect(()=>{
   .then((userData)=>{
 
     if(userData){
-      dispatch(login({userData}))//login is called in case user closes and open app againwhile the session in apprwrite is still going on,we must ensure our redux store remanins updated since it resets when closed 
+      dispatch(login({userData}))//login is called in case user closes and open app again while the session in apprwrite is still going on,we must ensure our redux store remanins updated since it resets when closed 
     }else{
       dispatch(logout())//must ensure that our store must remain updated
     }
