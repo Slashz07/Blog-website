@@ -5,5 +5,6 @@ import Home from "./Home.jsx";
 import LoginPage from "./LoginPage.jsx";
 import SignUpPage from "./SignUpPage.jsx"
 import Post from "./Post.jsx";
+import MyPosts from "./MyPosts.jsx";
 
-export {AddPost,AllPosts,EditPost,Home,LoginPage,SignUpPage,Post}
+export {AddPost,AllPosts,EditPost,Home,LoginPage,SignUpPage,Post,MyPosts}
