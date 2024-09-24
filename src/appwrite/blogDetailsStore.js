@@ -120,6 +120,18 @@ class BlogDetails{
             return false
         }
     }
+    async getMyBlogs(id,query=[Query.equal("userId",id)]){//we have used array since we could apply multiple queries as well
+        try {
+            return await this.databases.listDocuments(
+                configEnvVar.databaseId,
+                configEnvVar.collectionId,
+                query
+            )
+        } catch (error) {
+            console.log("error occured, could not fetch all the blogs")
+            return false
+        }
+    }
 }
 
 const blogDetails=new BlogDetails()
