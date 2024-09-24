@@ -6,9 +6,12 @@ import blogDetails from "../appwrite/blogDetailsStore";
 import uploadFiles from "../appwrite/mediaUpload";
 import { Container, Button } from "../components";
 import { Link } from "react-router-dom";
+import authService from "../appwrite/auth";
+import authUser from "../appwrite/authUserHandler";
 
 function Post() {
   const [post, setPost] = useState(null);
+  const [authorName,setAuthorName]=useState("")
   const navigate = useNavigate();
   const { slug } = useParams();
   const loggedUser = useSelector((state) => state.auth.userData);
@@ -24,6 +27,14 @@ function Post() {
     }
   }, [navigate, slug]);
 
+  useEffect(()=>{
+    if(post){
+      authUser.getUser(post.userId)
+      .then((data)=>setAuthorName(data.name))
+      .catch((error)=>{console.log("error : ",error)})
+    }
+  })
+
   const deletePost = () => {
     blogDetails.deleteBlog(slug).then((status) => {
       if (status) {
@@ -36,7 +47,11 @@ function Post() {
   return post ? (
     <div className="py-8">
       <Container>
-        <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
+      <div className="w-full flex flex-col items-center mb-4 relative border rounded-xl p-4 shadow-lg">
+          <h1 className=" font-semibold text-gray-700 mb-2" style={{fontSize:"3rem"}}>
+            <span className="text-blue-500">{authorName}</span>&apos;s blog
+          </h1>
+          
           <img
             src={uploadFiles.getFilePreview(post.featuredImage)}
             alt={post.title}
