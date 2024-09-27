@@ -1,7 +1,7 @@
-import { Client, Account, ID,Users } from "node-appwrite";
+import { Client,Users } from "node-appwrite";
 
 import configEnvVar from "../configure/config";
-import { Query } from "node-appwrite";
+
 
 class AuthUser {
   client = new Client()
@@ -20,7 +20,6 @@ class AuthUser {
 
   async getUser(userId) {
     try {
-  
       return await this.users.get(userId);
     } catch (error) {
       console.log("Could not fetch user with the provided id:", error);
