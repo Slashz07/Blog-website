@@ -42,6 +42,11 @@ function Header() {
       slug:"/my-posts",
       active:loginStatus
     },
+    {
+      name:"My account",
+      slug:"/my-account",
+      active:loginStatus
+    },
   ]
 
   return (
