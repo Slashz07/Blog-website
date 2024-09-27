@@ -16,10 +16,13 @@ const authSlice=createSlice({
         logout:(state)=>{
             state.status=false,
             state.userData=null
-        }
+        },
+        updatePic:(state,action)=>{
+            state.userData.prefs=action.payload.userPic
+        },
     }
 })
 
-export const {login,logout} = authSlice.actions
+export const {login,logout, updatePic} = authSlice.actions
 
 export default authSlice.reducer
