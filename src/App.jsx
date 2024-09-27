@@ -23,7 +23,7 @@ useEffect(()=>{
       dispatch(logout())//must ensure that our store must remain updated
     }
 
-  }).catch((error)=>{console.log("user isnt logged in,Error: ",error)})
+  }).catch((error)=>{console.log(error)})
   .finally(()=>setLoading(false))
 })
 
