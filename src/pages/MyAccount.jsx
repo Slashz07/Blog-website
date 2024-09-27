@@ -1,4 +1,4 @@
-import { useEffect,  useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import uploadFiles from "../appwrite/mediaUpload";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -7,17 +7,16 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import authService from "../appwrite/auth";
 import defaultProfileImg from "../assets/defaultProfileImg.png";
-import { updatePic } from "../features/authSlice";
+import { login, updatePic } from "../features/authSlice";
 
 function MyAccount() {
   const userData = useSelector((state) => state.auth.userData);
-  const imageInputRef=useRef(null)
   const [imgUrl, setImgUrl] = useState(userData.prefs);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setImgUrl(userData.prefs);
-  }, [userData]);
+  }, [userData.prefs]);
 
   const {
     register,
@@ -60,8 +59,11 @@ function MyAccount() {
     uploadFiles.deleteFile(currentImage)
   };
 
+
+
   async function updateAccountDetails(data) {
     notify("inProgress","Updations are being made,\nPlease wait a moment")
+
     try {
       if (data.password) {
         const confirmPass = window.prompt("Enter the current password");
@@ -77,24 +79,30 @@ function MyAccount() {
         ? await uploadFiles.uploadFile(data.image[0])
         : null;
       if (file) {
-        if (Object.keys(imgUrl).length) {
+        if (Object.keys(imgUrl).length && imgUrl.userImage != null) {
           uploadFiles.deleteFile(imgUrl.userImage);
         }
 
-        const updatedUserData = await authService.updateProfilePic(
+         await authService.updateProfilePic(
           file ? file.$id : undefined
         );
-        const userPic = updatedUserData.prefs;
-        dispatch(updatePic({ userPic }));
+   
       }
 
       if (userData.name != data.name)
         await authService.updateUserName(data.name);
 
       notify("success","Account updations  made successfully!");
-      reset()
     } catch (error) {
       notify("error",error.message);
+    } finally {
+      const userInfoAfterUpdation=await authService.getCurrentUser();
+      reset({
+        name:userInfoAfterUpdation.name,
+        image:"",
+        password:""
+      })
+      dispatch(login({userData:userInfoAfterUpdation}))
     }
   }
 
